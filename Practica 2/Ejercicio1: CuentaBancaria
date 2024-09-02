@@ -1,0 +1,50 @@
+/* Diseña una clase CuentaBancaria que tenga un saldo y un límite de retiro. 
+ Implementa métodos set y get para establecer y obtener el saldo, y añade un método para realizar retiros que tenga en cuenta el límite de retiro. 
+ Utilice el set para validar datos.
+ Autor: Lucia Luna
+ Fecha creacion: 01/09/24
+ Fecha ultima modificacion: 01/09/24
+ */
+
+class Cuenta(private var saldo: Double, private val limiteR: Double) {
+
+    fun getSaldo(): Double {
+        return saldo
+    }
+
+    fun setSaldo(nuevoSaldo: Double) {
+        if (nuevoSaldo >= 0) {
+            saldo = nuevoSaldo
+        } else {
+            println("El saldo no puede ser negativo.")
+        }
+    }
+
+    fun retirar(cantidad: Double): Boolean {
+        return if (cantidad <= 0) {
+            println("La cantidad a retirar debe ser positiva.")
+            false
+        } else if (cantidad > saldo) {
+            println("Saldo insuficiente.")
+            false
+        } else if (cantidad > limiteR) {
+            println("La cantidad excede el límite de retiro.")
+            false
+        } else {
+            saldo -= cantidad
+            true
+        }
+    } 
+}
+
+fun main() {
+    val cuenta = Cuenta(1000.0, 500.0)
+    println("Saldo inicial: " + cuenta.getSaldo())
+
+    cuenta.retirar(600.0) 
+    println("Saldo después del retiro: " + cuenta.getSaldo())
+
+    cuenta.retirar(300.0) 
+    println("Saldo después del retiro: " + cuenta.getSaldo())
+
+}
