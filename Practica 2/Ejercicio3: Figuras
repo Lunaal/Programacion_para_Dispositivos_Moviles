@@ -1,0 +1,70 @@
+/* Cree una clase abstracta “shape” la cual contenga las propiedades área, perímetro y las funciones para calcular estos valores e imprimir el resultado de cada operación.
+   Adicional crea tres subclases cuadrado, círculo y rectángulo que reciban los valores de sus lados.
+
+ Autor: Lucia Luna
+ Fecha creacion: 01/09/24
+ Fecha ultima modificacion: 01/09/24
+ */
+
+abstract class Figura {
+    abstract fun area(): Double
+    abstract fun perimetro(): Double
+
+    fun printArea() {
+        println("Área: " + area())
+    }
+
+    fun printPerimetro() {
+        println("Perímetro: " + perimetro())
+    }
+}
+
+
+class Circulo(private val radio: Double) : Figura() {
+    override fun area(): Double {
+        return 3.14 * radio * radio
+    }
+
+    override fun perimetro(): Double {
+        return 2 * 3.14 * radio
+    }
+}
+
+class Cuadrado(private val lado: Double) : Figura() {
+    override fun area(): Double {
+        return lado * lado
+    }
+
+    override fun perimetro(): Double {
+        return 4 * lado
+    }
+}
+
+class Rectangulo(private val ancho: Double, private val alto: Double) : Figura() {
+    override fun area(): Double {
+        return ancho * alto
+    }
+
+    override fun perimetro(): Double {
+        return 2 * (ancho + alto)
+    }
+}
+
+fun main() {
+    val cuadrado = Cuadrado(4.0)
+    val circulo = Circulo(3.0)
+    val rectangulo = Rectangulo(5.0, 7.0)
+
+    println("Cuadrado:")
+    cuadrado.printArea()
+    cuadrado.printPerimetro()
+
+    println("\nCírculo:")
+    circulo.printArea()
+    circulo.printPerimetro()
+
+    println("\nRectángulo:")
+    rectangulo.printArea()
+    rectangulo.printPerimetro()
+}
+
