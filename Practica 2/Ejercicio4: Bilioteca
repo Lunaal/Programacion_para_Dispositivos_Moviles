@@ -1,0 +1,157 @@
+/* Diseña un sistema de gestión de biblioteca que incluya las siguientes clases e interfaces
+ 
+ Autor: Lucia Luna
+ Fecha creacion: 01/09/24
+ Fecha ultima modificacion: 01/09/24
+ */
+
+abstract class Material(
+    val titulo: String,
+    val autor: String,
+    val anioPublicacion: Int
+) {
+    abstract fun mostrarDetalles()
+}
+
+class Libro(
+    titulo: String,
+    autor: String,
+    anioPublicacion: Int,
+    val genero: String,
+    val numeroPaginas: Int
+) : Material(titulo, autor, anioPublicacion) {
+
+    override fun mostrarDetalles() {
+        println("Título: $titulo")
+        println("Autor: $autor")
+        println("Año de Publicación: $anioPublicacion")
+        println("Género: $genero")
+        println("Número de Páginas: $numeroPaginas")
+    }
+}
+
+class Revista(
+    titulo: String,
+    autor: String,
+    anioPublicacion: Int,
+    val issn: String,
+    val volumen: Int,
+    val numero: Int,
+    val editorial: String
+) : Material(titulo, autor, anioPublicacion) {
+
+    override fun mostrarDetalles() {
+        println("Título: $titulo")
+        println("Autor: $autor")
+        println("Año de Publicación: $anioPublicacion")
+        println("ISSN: $issn")
+        println("Volumen: $volumen")
+        println("Número: $numero")
+        println("Editorial: $editorial")
+    }
+}
+
+data class Usuario(
+    val nombre: String,
+    val apellido: String,
+    val edad: Int
+)
+
+interface IBiblioteca {
+    fun registrarMaterial(material: Material)
+    fun registrarUsuario(usuario: Usuario)
+    fun prestarMaterial(titulo: String, usuario: Usuario): Boolean
+    fun devolverMaterial(titulo: String, usuario: Usuario): Boolean
+    fun mostrarMaterialesDisponibles()
+    fun mostrarMaterialesReservadosPorUsuario(usuario: Usuario)
+}
+
+class Biblioteca : IBiblioteca {
+    private val materialesDisponibles = mutableListOf<Material>()
+    private val materialesPrestados = mutableMapOf<Usuario, MutableList<Material>>()
+
+    override fun registrarMaterial(material: Material) {
+        materialesDisponibles.add(material)
+    }
+
+    override fun registrarUsuario(usuario: Usuario) {
+        materialesPrestados.putIfAbsent(usuario, mutableListOf())
+    }
+
+    override fun prestarMaterial(titulo: String, usuario: Usuario): Boolean {
+        val material = materialesDisponibles.find { it.titulo.equals(titulo, ignoreCase = true) }
+        return if (material != null) {
+            materialesDisponibles.remove(material)
+            materialesPrestados[usuario]?.add(material)
+            true
+        } else {
+            false
+        }
+    }
+
+    override fun devolverMaterial(titulo: String, usuario: Usuario): Boolean {
+        val prestamos = materialesPrestados[usuario]
+        val material = prestamos?.find { it.titulo.equals(titulo, ignoreCase = true) }
+        return if (material != null) {
+            prestamos.remove(material)
+            materialesDisponibles.add(material)
+            true
+        } else {
+            false
+        }
+    }
+
+    override fun mostrarMaterialesDisponibles() {
+        println("Materiales Disponibles:")
+        materialesDisponibles.forEach { it.mostrarDetalles() }
+    }
+
+    override fun mostrarMaterialesReservadosPorUsuario(usuario: Usuario) {
+        println("Materiales Reservados por ${usuario.nombre} ${usuario.apellido}:")
+        val prestamos = materialesPrestados[usuario]
+        if (prestamos.isNullOrEmpty()) {
+            println("No hay materiales reservados.")
+        } else {
+            prestamos.forEach { it.mostrarDetalles() }
+        }
+    }
+}
+
+fun main() {
+    val biblioteca = Biblioteca()
+
+    val libro1 = Libro("1984", "George Orwell", 1949, "Distopía", 328)
+    val revista1 = Revista("Scientific American", "Varios", 2024, "9876-5432", 302, 8, "Scientific American, Inc.")
+
+    val usuario1 = Usuario("María", "Rodríguez", 28)
+    val usuario2 = Usuario("Carlos", "Sánchez", 34)
+
+    biblioteca.registrarMaterial(libro1)
+    biblioteca.registrarMaterial(revista1)
+    biblioteca.registrarUsuario(usuario1)
+    biblioteca.registrarUsuario(usuario2)
+
+    biblioteca.mostrarMaterialesDisponibles()
+
+    println("Intentando prestar '1984' a ${usuario1.nombre} ${usuario1.apellido}...")
+    val prestamoExitoso = biblioteca.prestarMaterial("1984", usuario1)
+    if (prestamoExitoso) {
+        println("Material prestado exitosamente.")
+    } else {
+        println("No se pudo prestar el material.")
+    }
+    println()
+
+    biblioteca.mostrarMaterialesReservadosPorUsuario(usuario1)
+
+    println("Intentando devolver '1984' por ${usuario1.nombre} ${usuario1.apellido}...")
+    val devolucionExitoso = biblioteca.devolverMaterial("1984", usuario1)
+    if (devolucionExitoso) {
+        println("Material devuelto exitosamente.")
+    } else {
+        println("No se pudo devolver el material.")
+    }
+    println()
+
+    biblioteca.mostrarMaterialesDisponibles()
+}
