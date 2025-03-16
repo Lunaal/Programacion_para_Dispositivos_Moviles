@@ -1,0 +1,54 @@
+/*  Realizar una calculadora  básica suma, resta, multiplicación, división. Debe imprimir un menú con las opciones incluyendo una opción salir. 
+ 
+ Autor: Lucia Luna
+ Fecha creacion: 15/03/25
+ Fecha ultima modificacion: 15/03/25
+ */
+
+//Funciones para las operaciones
+fun Suma(a: Double, b: Double):Double{
+    return a + b
+}
+
+fun Resta(a: Double, b: Double):Double{
+    return a - b
+}
+
+fun Multiplicacion(a: Double, b: Double):Double{
+    return a * b
+}
+
+fun Division(a: Double, b: Double):Double{
+    return a / b
+}
+
+
+fun main() {
+   
+    // El usuario selecciona una opcion de la calculadora
+    print("Seleccione una opcion: \n ---Menu---\n ")
+    print("1. Suma \n 2. Resta \n 3. Multiplicacion\n 4. Division\n 5. Salir\n ")
+    val opcion = readLine()?.toInt() ?: 0
+   
+    //Se asegura de que las opcion seleccionada sea una de las disponibles
+    if ( opcion > 0 && opcion < 5){
+	 //Pide al usuario que ingrese los numero para relizar la operacion
+        print(" Ingrese el primer numero ")
+        val a = readLine()?.toDouble() ?: 0.0
+        print(" Ingrese el segundo numero ")
+        val b = readLine()?.toDouble() ?: 0.0
+        
+       //LLama a la function de la operacion correspondiente
+        when(opcion) {
+            1 -> println("El resultado es:${Suma(a,b)}")
+            2 -> println("El resultado es:${Resta(a,b)}")
+            3 -> println("El resultado es:${Multiplicacion(a,b)}")
+            4 -> println("El resultado es:${Division(a,b)}")
+            5 -> ("Fin")
+         
+        }
+    }else{
+        println("Opcion no valida")
+        
+    }
+}
