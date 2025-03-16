@@ -1,0 +1,38 @@
+/* Piedra, Papel, Tijera. Escriba un programa que realice el juego de piedra, papel o tijera.
+ 
+ Autor: Lucia Luna
+ Fecha creacion: 15/03/25
+ Fecha ultima modificacion: 15/03/25
+ */
+
+import kotlin.random.Random
+
+// Función para jugar determinar quien gana
+fun jugar(computadora: Int, jugador: Int) {
+    
+    
+    // Determina los casos en los que el jugador gana, cualquier otro caso pierde
+    when {
+        computadora == jugador -> println("Empate")
+        computadora == 1 && jugador == 2 -> println("Ganaste")
+        computadora == 2 && jugador == 3 -> println("Ganaste")
+        computadora == 3 && jugador == 1 -> println("Ganaste")
+        else -> println("Perdiste")
+    }
+}
+
+fun main() {
+    // La computadora selecciona una opcion
+    val computadora = Random.nextInt(1, 4)
+    
+    // El jugador selecciona una opcion
+    print("Seleccione un numero:\n 1. Piedra \n 2. Papel \n 3. Tijera\n ")
+    val jugador = readLine()?.toInt() ?: 0
+    
+    // Valida que la opcion elegida sea valida
+    if (jugador>3 && jugador < 1){
+    jugar(computadora, jugador)
+    } else{
+        print("Opcion no valida")
+    }
+}
