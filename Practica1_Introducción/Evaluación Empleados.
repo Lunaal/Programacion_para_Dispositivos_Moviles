@@ -1,0 +1,42 @@
+/*  Escribir un programa que lea la puntuación del usuario y su salario mensual
+  e imprima su nivel de rendimiento, así como la cantidad de dinero que recibirá el usuario.
+ 
+ Autor: Lucia Luna
+ Fecha creacion: 15/03/25
+ Fecha ultima modificacion: 15/03/25
+ */
+
+// Función para calcular el total en base al salario y la puntuación
+fun calcularTotal(salario: Double, puntuacion: Int): Double {
+    return salario * (puntuacion / 10.0)
+}
+
+// Función para determinar el nivel según la puntuación con un when
+fun determinarNivel(puntuacion: Int) {
+    when (puntuacion) {
+        in 0..3 -> println("Nivel Inaceptable")
+        in 4..6 -> println("Nivel Aceptable")
+        in 7..10 -> println("Nivel Meritorio")
+    }
+}
+
+fun main() {
+    // Se pide ingresar el salario
+    print("Ingrese salario: ")
+    val salario = readLine()?.toDouble() ?: 0.0
+
+    // Se pide ingresar la puntuación
+    print("Ingrese puntuación: ")
+    val puntuacion = readLine()?.toInt() ?: 0
+
+    // Llama a la funcion para calcular el total en base al salario y la puntuación
+    val total = calcularTotal(salario, puntuacion)
+
+    // LLama a la funcion para determinar si la puntuación es aceptable
+    determinarNivel(puntuacion)
+
+    // Muestra el resultado
+    println("Cantidad de dinero recibida: $total")
+}
+
+
