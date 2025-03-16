@@ -1,0 +1,50 @@
+/*  Adivina Número. Escribe un programa que genere un número aleatorio entre 1 y 30, luego pida al usuario que adivine el número.
+Proporciona pistas indicando si el número a adivinar es mayor o menor que el número ingresado por el usuario. 
+ 
+ Autor: Lucia Luna
+ Fecha creacion: 15/03/25
+ Fecha ultima modificacion: 15/03/25
+ */
+
+import kotlin.random.Random
+
+// Función para dar la pista al jugador dependiendo si el numero es mas alto o mas bajo
+fun darPista(jugador: Int, computadora: Int): String {
+    return when {
+        jugador < computadora -> "El numero es mas alto"
+        jugador > computadora -> "El numero es mas bajo"
+        else -> ""
+    }
+}
+
+// Función para determinar si el jugador ganó o perdió
+fun mostrarResultado(computadora: Int, jugador: Int) {
+    if (computadora == jugador) {
+        println("Ganaste")
+    } else {
+        println("Game Over")
+    }
+}
+
+fun main() {
+    // La computadora selecciona un numero aleatorio
+    val computadora = Random.nextInt(1, 31)
+    var jugador = 0
+    var intento = 0
+    
+    // Determina los casos en los que el jugador gana, cualquier otro caso pierde
+    while (intento < 5 && computadora != jugador) {
+        // El jugador selecciona una opcion
+        print("Seleccione un numero del 1 al 30: ")
+        jugador = readLine()?.toInt() ?: 0
+        
+        // Llama a la funcion para dar la pista siempre que el jugador no haya acertado y aun tenga intentos
+        if (jugador != computadora) {
+            println(darPista(jugador, computadora))
+            intento++
+        }
+    }
+    
+    // Determina si el jugador ganó o perdió
+    mostrarResultado(computadora, jugador)
+}
